@@ -1,0 +1,13 @@
+server:
+  port: 8888
+
+spring:
+  activemq:
+    broker-url: tcp://192.168.77.112:61616
+    user: admin
+    password: admin
+  jms:
+    pub-sub-domain: false  #false 为queue true 为true
+
+
+myDestination: queueok

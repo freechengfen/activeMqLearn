@@ -1,0 +1,44 @@
+       jmsmessage:
+            消息头
+                destination
+                    topic/queue
+                deliveryMode
+                    持久化
+                expiration
+                    默认永不过期
+                priority
+                   0-4普通消息 5-9是加急消息   并不严格按照优先级执行  但加急消息一定比普通消息优先
+                mesageid
+                    id标识
+            消息体
+                textMessage
+                mapMessage
+                byteMessage
+                streamMessage
+                objectMessage
+            消息属性(重点标注)
+                例如  textMessage.setStringProperty
+
+
+        jms的可靠性
+            持久化
+                例如：messageProducer.setDeliverMode
+                queue
+                  队列是默认持久化的，持久化的队列，MQ宕机之后 重启 消息还是能被消费
+                topic
+                 持久化subscriber，只要这个subscriber 注册过了并且是持化的，当此subscriber 离线时，再登录后，仍然可以收到
+                 其离线时 发送的topic
+            事物
+                事务是一般设置在生产者这边，开启事务之后，之后执行session.commit()才能，把信息提交.不然信息不会提交
+                消费者这边也可以设置事务，但是如果  没有session.commit 的话，就会重复消费信息的情况
+                 因此消费者这边一般不设置事务
+
+                设置事务主要是 防止出现异常 ，还可以使用trycatch session.rollback()
+            签收
+                 签收一般使用自动签收(Session.AUTO_ACKNOWLEDGE)\手动签收(Session.CLIENT_ACKNOWLEDGE)
+                 当设置为手动签收时，消费者必须调用  message.acknowledge() 方法确认签收，要不然也会产生到重复消费的问题
+            事务和签收：消费者开启事务的时候，签收自动签收
+
+            activeMq Broker  内嵌式activeMq服务的实例
+
+

@@ -1,17 +1,18 @@
-package start;/*
+package start.persistence;/*
 @author : Administrator
 @create : 2020-05-2020/5/8-21:21
-
+ 持久化subscriber，只要这个subscriber 注册过了并且是持化的，当此subscriber 离线时，再登录后，仍然可以收到
+                   其离线时 发送的topic
 */
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
 
-public class JmsProduce {
+public class JmsProduce_topic_persistence {
 
     private final  static  String ACTIVEMQ_URL="tcp://192.168.77.112:61616";
-    private static String quere_name="query1";
+    private static String topic_name="topic_persistence1";
 
     public static void main(String[] args) throws JMSException {
 
@@ -22,18 +23,18 @@ public class JmsProduce {
         try {
             ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory(ACTIVEMQ_URL);
             connection = activeMQConnectionFactory.createConnection();
-            connection.start();
             //第一个参数 事务，第二个参数 签收
-             session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
-            
-            Destination destination = session.createQueue(quere_name);
-             producer = session.createProducer(destination);
+            session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
+            Topic topic = session.createTopic(topic_name);
+            producer = session.createProducer(topic);
+            producer.setDeliveryMode(DeliveryMode.PERSISTENT);
+            connection.start();  //创建持久化后  再打开
 
             for (int i = 1; i <=3 ; i++) {
-                TextMessage textMessage = session.createTextMessage("队列\t" + i);  //有多种形式的message 常用的是 TextMessage\mapMessage
+                TextMessage textMessage = session.createTextMessage("主题\t" + i);
                 producer.send(textMessage);
             }
-            System.out.println("**********发送成功");
+            System.out.println(topic+"**********发送成功");
             
         } catch (JMSException e) {
             e.printStackTrace();

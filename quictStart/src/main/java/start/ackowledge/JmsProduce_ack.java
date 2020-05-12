@@ -1,6 +1,8 @@
-package start;/*
+package start.ackowledge;/*
 @author : Administrator
 @create : 2020-05-2020/5/8-21:21
+
+
 
 */
 
@@ -8,10 +10,10 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
 
-public class JmsProduce {
+public class JmsProduce_ack {
 
     private final  static  String ACTIVEMQ_URL="tcp://192.168.77.112:61616";
-    private static String quere_name="query1";
+    private static String quere_name="query_ack";
 
     public static void main(String[] args) throws JMSException {
 
@@ -25,7 +27,7 @@ public class JmsProduce {
             connection.start();
             //第一个参数 事务，第二个参数 签收
              session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
-            
+
             Destination destination = session.createQueue(quere_name);
              producer = session.createProducer(destination);
 
