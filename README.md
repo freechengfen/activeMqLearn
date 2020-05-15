@@ -59,10 +59,11 @@
                           dataDirectory="${basedir}/activemq-data" 
                           dataSource="#mysql-ds"
          />` 
-         
-        `activemq+zookeeper+levelDB
-        https://blog.csdn.net/zyjavaWeb/article/details/79209572`
-                
+        activemq的高可用性   
+        activemq+zookeeper+levelDB
+          客户端只能连接到 activemq 主服务器，从服务器只是同步主服务器，在主服务器挂的时候，选举成为主服务器。 
+          具体配置如下：
+          `https://blog.csdn.net/zyjavaWeb/article/details/79209572`
        异步投递
             mq默认是异步投递，除了设置为同步投递的和 没有使用事物但持久化的为同步发送消息
             同步投递在 slower consumer 中就会阻塞降低程序反应时间，从而对于客户而言不那么
